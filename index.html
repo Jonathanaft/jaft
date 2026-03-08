@@ -10,7 +10,7 @@
 
 body{
     margin:0;
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family:"Segoe UI", Arial, sans-serif;
     background:#f4f6fb;
     color:#222;
 }
@@ -24,12 +24,10 @@ header{
 
 header h1{
     margin:0;
-    font-size:32px;
 }
 
 header p{
     color:#555;
-    margin-top:10px;
 }
 
 nav{
@@ -47,7 +45,6 @@ nav button{
     background:#4f6cff;
     color:white;
     cursor:pointer;
-    transition:0.2s;
 }
 
 nav button:hover{
@@ -104,7 +101,7 @@ footer{
 
 <nav>
 <button onclick="showSection('home')">Home</button>
-<button onclick="showSection('video')">Watch Video</button>
+<button onclick="openVideo()">New Video</button>
 <button onclick="showSection('post')">View Post</button>
 </nav>
 
@@ -117,11 +114,6 @@ footer{
 This hub allows viewers to watch jaftcreate's Roblox puzzle content
 without needing to visit large tracking-heavy platforms.
 </p>
-
-<p>
-Use the buttons above to watch a video or read a post from jaft.
-Everything loads inside this page.
-</p>
 </div>
 </div>
 
@@ -129,7 +121,7 @@ Everything loads inside this page.
 <div class="card">
 <h2>Featured Video</h2>
 
-<video id="videoPlayer" width="100%" controls>
+<video width="100%" controls>
 <source src="video.mp4" type="video/mp4">
 </video>
 
@@ -174,11 +166,13 @@ function loadPost(){
     });
 }
 
-function checkVideo(){
+function openVideo(){
 
     fetch("video.mp4", {method:"HEAD"})
     .then(response=>{
-        if(!response.ok){
+        if(response.ok){
+            showSection("video");
+        }else{
             redirectEmergency();
         }
     })
@@ -199,7 +193,6 @@ function redirectEmergency(){
 }
 
 loadPost();
-checkVideo();
 
 </script>
 
