@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jaftcreate's Viewing Hub</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#0f0f14;
+    color:white;
+}
+
+header{
+    background:#1d1d2b;
+    padding:20px;
+    text-align:center;
+    border-bottom:2px solid #333;
+}
+
+header p{
+    color:#bdbdd6;
+}
+
+nav{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    padding:15px;
+    background:#151520;
+}
+
+nav button{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:#2d2d44;
+    color:white;
+    cursor:pointer;
+}
+
+nav button:hover{
+    background:#4b4b73;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:30px;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+.video-box, .post-box{
+    background:#1b1b29;
+    padding:20px;
+    border-radius:10px;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    color:#8a8aa3;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>jaftcreate's Viewing Hub</h1>
+<p>For jaft's viewers who don't want to get tracked with the new and invasive Online Safety Acts</p>
+</header>
+
+<nav>
+<button onclick="showSection('home')">Home</button>
+<button onclick="showSection('video')">Watch Video</button>
+<button onclick="showSection('post')">View Post</button>
+</nav>
+
+<div class="container">
+
+<div id="home" class="section active">
+<h2>Welcome</h2>
+<p>This hub lets viewers watch jaftcreate's Roblox puzzle content without redirects.</p>
+</div>
+
+<div id="video" class="section">
+<div class="video-box">
+<h2>Featured Video</h2>
+
+<video width="100%" controls>
+<source src="video.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+</div>
+</div>
+
+<div id="post" class="section">
+<div class="post-box">
+<h2>Creator Post</h2>
+
+<pre id="postContent">Loading post...</pre>
+
+</div>
+</div>
+
+</div>
+
+<footer>
+<p>jaftcreate's Viewing Hub</p>
+</footer>
+
+<script>
+function showSection(id){
+    let sections = document.querySelectorAll(".section");
+    sections.forEach(section => section.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+function loadPost(){
+    fetch("post.txt")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("postContent").textContent = data;
+    })
+    .catch(() => {
+        document.getElementById("postContent").textContent = "Failed to load post.";
+    });
+}
+
+loadPost();
+</script>
+
+</body>
+</html>
