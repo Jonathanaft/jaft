@@ -3,46 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>jaftcreate's Viewing Hub</title>
 
 <style>
+
 body{
     margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#0f0f14;
-    color:white;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:#f4f6fb;
+    color:#222;
 }
 
 header{
-    background:#1d1d2b;
-    padding:20px;
+    background:white;
+    padding:30px;
     text-align:center;
-    border-bottom:2px solid #333;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+header h1{
+    margin:0;
+    font-size:32px;
 }
 
 header p{
-    color:#bdbdd6;
+    color:#555;
+    margin-top:10px;
 }
 
 nav{
     display:flex;
     justify-content:center;
-    gap:15px;
-    padding:15px;
-    background:#151520;
+    gap:12px;
+    padding:18px;
 }
 
 nav button{
-    padding:10px 18px;
+    padding:12px 20px;
+    font-size:15px;
     border:none;
-    border-radius:8px;
-    background:#2d2d44;
+    border-radius:10px;
+    background:#4f6cff;
     color:white;
     cursor:pointer;
+    transition:0.2s;
 }
 
 nav button:hover{
-    background:#4b4b73;
+    background:#3954d4;
 }
 
 .container{
@@ -59,17 +68,30 @@ nav button:hover{
     display:block;
 }
 
-.video-box, .post-box{
-    background:#1b1b29;
-    padding:20px;
+.card{
+    background:white;
+    padding:30px;
+    border-radius:14px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+video{
     border-radius:10px;
+    margin-top:10px;
+}
+
+pre{
+    white-space:pre-wrap;
+    font-family:inherit;
+    line-height:1.6;
 }
 
 footer{
     text-align:center;
-    padding:20px;
-    color:#8a8aa3;
+    padding:30px;
+    color:#777;
 }
+
 </style>
 </head>
 
@@ -89,24 +111,33 @@ footer{
 <div class="container">
 
 <div id="home" class="section active">
+<div class="card">
 <h2>Welcome</h2>
-<p>This hub lets viewers watch jaftcreate's Roblox puzzle content without redirects.</p>
+<p>
+This hub allows viewers to watch jaftcreate's Roblox puzzle content
+without needing to visit large tracking-heavy platforms.
+</p>
+
+<p>
+Use the buttons above to watch a video or read a post from jaft.
+Everything loads inside this page.
+</p>
+</div>
 </div>
 
 <div id="video" class="section">
-<div class="video-box">
+<div class="card">
 <h2>Featured Video</h2>
 
-<video width="100%" controls>
+<video id="videoPlayer" width="100%" controls>
 <source src="video.mp4" type="video/mp4">
-Your browser does not support the video tag.
 </video>
 
 </div>
 </div>
 
 <div id="post" class="section">
-<div class="post-box">
+<div class="card">
 <h2>Creator Post</h2>
 
 <pre id="postContent">Loading post...</pre>
@@ -117,28 +148,59 @@ Your browser does not support the video tag.
 </div>
 
 <footer>
-<p>jaftcreate's Viewing Hub</p>
+jaftcreate's Viewing Hub
 </footer>
 
 <script>
+
 function showSection(id){
     let sections = document.querySelectorAll(".section");
-    sections.forEach(section => section.classList.remove("active"));
+
+    sections.forEach(section=>{
+        section.classList.remove("active");
+    });
+
     document.getElementById(id).classList.add("active");
 }
 
 function loadPost(){
     fetch("post.txt")
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("postContent").textContent = data;
+    .then(r => r.text())
+    .then(text => {
+        document.getElementById("postContent").textContent = text;
     })
-    .catch(() => {
-        document.getElementById("postContent").textContent = "Failed to load post.";
+    .catch(()=>{
+        document.getElementById("postContent").textContent = "Post could not be loaded.";
     });
 }
 
+function checkVideo(){
+
+    fetch("video.mp4", {method:"HEAD"})
+    .then(response=>{
+        if(!response.ok){
+            redirectEmergency();
+        }
+    })
+    .catch(()=>{
+        redirectEmergency();
+    });
+
+}
+
+function redirectEmergency(){
+
+    fetch("emergencylink.txt")
+    .then(r=>r.text())
+    .then(link=>{
+        window.location.href = link.trim();
+    });
+
+}
+
 loadPost();
+checkVideo();
+
 </script>
 
 </body>
